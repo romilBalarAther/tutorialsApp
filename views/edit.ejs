@@ -1,0 +1,21 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/Tut/list">Articles</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+</ol>
+<h1 class="display-4">Edit Tutorial</h1>
+<form method="post" action="/Tut/update/<%= tutorial.id %>">
+    <div class="form-group">
+        <label for="title">Name</label>
+        <input type="text" name="name" class="form-control" value="<%= tutorial.name %>">
+    </div>
+    <div class="form-group">
+        <label for="body">Body</label>
+        <textarea name="body" class="form-control"><%= tutorial.body %></textarea>
+    </div>
+    <div class="form-group">
+        <label for="status">Body</label>
+        <textarea name="status" class="form-control"><%= tutorial.status %></textarea>
+
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>

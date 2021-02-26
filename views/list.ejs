@@ -1,0 +1,27 @@
+<h1 class="display-4">Tutorials</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% tutorials.forEach(function(tutorial){ %>
+            <tr>
+                <td><%= tutorial.id %></td>
+                <td><%= tutorial.name %></td>
+                <td><%= tutorial.status %> </td>
+                <td>
+                    <a href="/Tut/edit/<%= tutorial.id %>" class="btn btn-primary">Edit</a>
+                    <form class="d-inline" action="/Tut/delete/<%= tutorial.id %>" method="post">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                    <!-- <a href="/Tut/delete/<%= tutorial.id %>" class=" btb btn-danger">Delete</a> -->
+                </td>
+               
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
