@@ -30,16 +30,45 @@ module.exports.http = {
     ***************************************************************************/
 
     // order: [
-    //   'cookieParser',
-    //   'session',
+    //   // 'cookieParser',
+    //   // 'session',
     //   'bodyParser',
+    //   'requestLogger',
     //   'compress',
     //   'poweredBy',
     //   'router',
     //   'www',
     //   'favicon',
     // ],
+    order: [
+      'startRequestTimer',
+      'cookieParser',
+      'session',
+      'requestLogger',  // Just here
+      'bodyParser',
+      'handleBodyParserError',
+      'compress',
+      'methodOverride',
+      'poweredBy',
+      '$custom',
+      'router',
+      'www',
+      'favicon',
+      '404',
+      '500'
+    ],
+    
+    requestLogger: function (req, res, next) {
+      res.on('finish', () => {
+        sails.log.debug(req.ip,
+                        req._startTime,
+                        req.method,
+                        req.url,
+                        res.statusCode);
+      });
 
+      return next();
+    },
 
     /***************************************************************************
     *                                                                          *

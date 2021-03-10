@@ -2,3 +2,11 @@
 <p class="mb-4">This is a Sails.js app for managing Tutorials</p>
 <a href="/Tut/list" class="btn btn-light">View Tutorials</a>
 <a href="/Tut/add" class="btn btn-light">Add Tutorial</a>
+<br> <br>
+<form method="post" action="/Tut/verifyApiKey" class="apikey">
+    <div class="apikey">
+        <label for="apikey">API KEY:</label>
+        <input type="text" name="apikey" >
+        <input type="submit" value="Submit" class="btn">
+    </div>
+</form>

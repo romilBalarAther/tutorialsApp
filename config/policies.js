@@ -18,5 +18,7 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
+  // 'Tut/verifyApiKey':true,
+  // 'Tut/*':'isValidApiKey'
 
 };

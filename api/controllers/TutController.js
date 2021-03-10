@@ -16,101 +16,99 @@
 module.exports = {
     list:function(req, res)
     {
-        Tut.find({}).exec(function(err, tutorials)
-        {
-            if(err)
-            {
-                res.send(500, {error: 'Database error'});
-            }
-            res.view('list',{tutorials:tutorials});
-
+        Tut.find({})
+        .then(tutorials=>{
+            return res.ok(tutorials)
         })
-    },
-    add:function(req, res)
-    {
-        res.view('add');
+        .catch(err=> res.notFound(err))
     },
     create:function(req, res)
     {
-        var name=req.body.name;
-        var body=req.body.body;
-        var status=req.body.status;
+        var name=req.param('name');
+        var body=req.param('body');
+        var status=req.param('status');
 
-        Tut.create({name:name, body:body, status:status}).exec(function(err)
-        {
-            if(err)
-            {
-                res.send(500, { error: 'Database error'});
-            }
-            res.redirect('/Tut/list');
-        });
-    },
+        Tut.create({name:name, body:body, status:status})
+        .then( Tut=>{
+            return res.ok(Tut);
+        })
+        .catch(err =>{
+            if(err.name=='usageError')
+                res.badRequest(err);
+            else
+                res.serverError(err);      
+        })         
+          
+     },    
+
     delete:function(req, res)
     {
-        Tut.destroy({id:req.params.id}).exec(function(err)
-        {
-            if(err)
-            {
-                res.send(500, {error:'Database error'});
-            }
-            res.redirect('/Tut/list');
-        });
-
-        
-        return false;
-
+        Tut.destroy({id:req.params.id})
+        .then(result => {return res.ok(result)})
+        .catch(err =>{
+            if(err.name=='usageError')
+                res.badRequest(err);
+            else
+                res.databaseErrror(res); })
     },
-    edit:function(req, res)
+    deleteAll:function(req,res)
     {
-        Tut.findOne({id:req.params.id}).exec(function(err,tutorial){
-            if(err)
-            { 
-                res.send(500, {error:'Database error'});
-            }
-            res.view('edit', {tutorial:tutorial});
-                   
-        })
-
+        Tut.destroy({})
+        .then(result => {return res.ok(result)})
+        .catch(err =>{
+            if(err.name=='usageError')
+                res.badRequest(err);
+            else
+                res.databaseErrror(res); })
     },
+
     update:function(req, res)
     {
-        var name=req.body.name;
-        var body=req.body.body;
-        var status=req.body.status;
+        let attributes={}
+        s
 
-        Tut.update({id:req.params.id},{name:name, body:body, status:status}).exec(function(err)
-        {
-            if(err)
-            {
-                res.send(500, { error: 'Database error'});
-            }
-            res.redirect('/Tut/list');
-        });
+        if(req.param('name'))
+            attributes.name=req.param('name');
+
+        if(req.param('status'))
+            attributes.status=req.param('status');            
+        
+    
+        Tut.update({id:req.params.id}).set(attributes)
+        .then(result =>{ return res.ok(result)})
+        .catch(err=> {
+            if(err.name=='usageError')
+                res.badRequest(err);
+            else
+                res.notFound(err);
+         })
+       
     },
-    search:function(req, res){
-        res.view('search')
+   
+    find:function(req, res){ 
+        
+        let attributes={}
+        if(req.param('id'))
+            attributes.id=req.param('id');      
+
+        if(req.param('name'))
+            attributes.name={contains:req.param('name')};
+
+        if(req.param('status'))
+            attributes.status=req.param('status');
+
+        Tut.find(attributes)
+            .then(tutorials=>{
+                return res.ok(tutorials)
+            })
+            .catch(err=> {
+                if(err.name=='usageError')
+                    res.badRequest(err);
+                else
+                    res.notFound(err);
+             })
+
+          
     },
-    find:function(req, res){
-        if(req.body.id)
-            var id=req.body.id;
-
-        if(req.body.name)
-            var name=req.body.name;
-            
-        if(req.body.status)
-            var status=req.body.status;
-
-        Tut.find({id:id,name: {contains: name},status:status}).meta({makeLikeModifierCaseInsensitive: true}).exec(function(err, tutorials)
-        {
-            if(err)
-            {
-                res.send(500, {error: 'Database error'});
-            }
-            res.view('list',{tutorials:tutorials});
-
-        })
-    }
-  
-
 };
 

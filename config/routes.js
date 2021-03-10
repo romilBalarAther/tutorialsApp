@@ -13,10 +13,12 @@ module.exports.routes = {
 
 
   '/': { view: 'pages/homepage' },
-
-  'post /tut/delete/:id': 'TutController.delete',
-   'get /tut/edit/:id': 'TutController.edit',
-   'post /tut/update/:id': 'TutController.update',
-
+  'POST /tutorials': 'TutController.create',
+  'DELETE /tutorials/:id': 'TutController.delete',
+  'DELETE /tutorials/all': 'TutController.deleteAll',   
+  // 'GET /Tut': 'TutController.list',
+  'GET /tutorials/': 'TutController.find',
+  'PUT /tutorials/:id': 'TutController.update',
+  
 
 };
