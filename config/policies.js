@@ -21,4 +21,6 @@ module.exports.policies = {
   // 'Tut/verifyApiKey':true,
   // 'Tut/*':'isValidApiKey'
 
+  'Tut/*': 'isValidApiKey'
+
 };
